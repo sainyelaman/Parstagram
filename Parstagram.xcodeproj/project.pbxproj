@@ -21,6 +21,7 @@
 		8E131ECE27ECD70D00C61027 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E131ECD27ECD70D00C61027 /* CameraViewController.swift */; };
 		8E131ED027ECE87A00C61027 /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E131ECF27ECE87A00C61027 /* PostCell.swift */; };
 		8EE685DA27F6193900188316 /* CommentViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE685D927F6193900188316 /* CommentViewCell.swift */; };
+		8EE685E027F6382E00188316 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE685DF27F6382E00188316 /* ProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,7 @@
 		8E131ECD27ECD70D00C61027 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		8E131ECF27ECE87A00C61027 /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 		8EE685D927F6193900188316 /* CommentViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewCell.swift; sourceTree = "<group>"; };
+		8EE685DF27F6382E00188316 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		C0C1B85A95953F948305F466 /* Pods-Parstagram.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Parstagram.debug.xcconfig"; path = "Target Support Files/Pods-Parstagram/Pods-Parstagram.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -132,6 +134,7 @@
 				8E131EC927ECCF5600C61027 /* LoginViewController.swift */,
 				8E131ECB27ECCF6D00C61027 /* FeedViewController.swift */,
 				8E131ECD27ECD70D00C61027 /* CameraViewController.swift */,
+				8EE685DF27F6382E00188316 /* ProfileViewController.swift */,
 				8E131ECF27ECE87A00C61027 /* PostCell.swift */,
 				8EE685D927F6193900188316 /* CommentViewCell.swift */,
 			);
@@ -344,6 +347,7 @@
 				8E131ECC27ECCF6D00C61027 /* FeedViewController.swift in Sources */,
 				8EE685DA27F6193900188316 /* CommentViewCell.swift in Sources */,
 				8E131E9C27EBD5C600C61027 /* SceneDelegate.swift in Sources */,
+				8EE685E027F6382E00188316 /* ProfileViewController.swift in Sources */,
 				8E131ED027ECE87A00C61027 /* PostCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

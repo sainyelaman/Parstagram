@@ -15,10 +15,14 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     var numberOfPosts: Int!
     let myRefreshControl = UIRefreshControl()
     
-    @IBOutlet weak var tableView: UITableView!
-    
     let commentBar = MessageInputBar()
     var showsCommentBar = false
+    
+    var posts = [PFObject]()
+    var selectedPost: PFObject!
+    
+    
+    @IBOutlet weak var tableView: UITableView!
     
     
     @IBAction func onLogout(_ sender: Any) {
@@ -31,11 +35,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         delegate.window?.rootViewController = LoginViewController
     }
     
-    
-    var posts = [PFObject]()
-    
-    var selectedPost: PFObject!
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -49,7 +49,6 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.delegate = self
         tableView.dataSource = self
         
-        
         tableView.keyboardDismissMode = .interactive
         
         let center = NotificationCenter.default
@@ -57,6 +56,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         // Do any additional setup after loading the view.
     }
+    
     
     @objc func keyboardWillBeHidden(note: Notification) {
         commentBar.inputTextView.text = nil
@@ -69,17 +69,17 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         return commentBar
     }
     
+    
     override var canBecomeFirstResponder: Bool {
         return showsCommentBar
     }
-    
     
     
     @objc func onRefresh() {
         numberOfPosts = 20
         
         let query = PFQuery(className: "Posts")
-        query.includeKeys(["author", "comments", "comments.author"])
+        query.includeKeys(["author", "comments", "comments.author", "comments.profileImage"])
         query.limit = numberOfPosts
         
         query.findObjectsInBackground{ (posts, error) in
@@ -92,13 +92,16 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.myRefreshControl.endRefreshing()
     }
     
+    
     func messageInputBar(_ inputBar: MessageInputBar, didPressSendButtonWith text: String) {
         // create the comment
-        let comment = PFObject(className: "Comments")
+        let comment = PFObject(className: "comments")
+
         
         comment["text"] = text
         comment["post"] = selectedPost
         comment["author"] = PFUser.current()!
+
         selectedPost.add(comment, forKey: "comments")
 
         selectedPost.saveInBackground { (success, error) in
@@ -110,7 +113,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         
         tableView.reloadData()
-        
+
         // clear and dismiss the input bar
         commentBar.inputTextView.text = nil
         showsCommentBar = false
@@ -118,11 +121,12 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         commentBar.inputTextView.resignFirstResponder()
     }
     
+    
     @objc func loadMore() {
         
         numberOfPosts = numberOfPosts + 20
         let query = PFQuery(className: "Posts")
-        query.includeKeys(["author", "comments", "comments.author"])
+        query.includeKeys(["author", "comments", "comments.author", "comments.profileImage"])
         query.limit = numberOfPosts
         
         query.findObjectsInBackground{ (posts, error) in
@@ -139,7 +143,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidAppear(animated)
         numberOfPosts = 20
         let query = PFQuery(className: "Posts")
-        query.includeKeys(["author", "comments", "comments.author"])
+        query.includeKeys(["author", "comments", "comments.author", "comments.profileImage"])
         query.limit = numberOfPosts
         
         query.findObjectsInBackground{ (posts, error) in
@@ -152,10 +156,11 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row + 1 == posts.count{
+        if indexPath.section + 1 == posts.count{
             loadMore()
         }
     }
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let post = posts[section]
@@ -168,6 +173,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     func numberOfSections(in tableView: UITableView) -> Int {
         return posts.count
     }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let post = posts[indexPath.section]
@@ -187,6 +193,16 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
             let url = URL(string: urlString)!
             cell.photoView.af.setImage(withURL: url)
             
+            
+            // setting the profile image of the author into the post cell
+            cell.profileView.layer.masksToBounds = true
+            cell.profileView.layer.cornerRadius = cell.profileView.bounds.width / 2
+            let profileImageFile = user["profilePic"] as! PFFileObject
+            let profileImageUrlString = profileImageFile.url!
+            let profileUrl = URL(string: profileImageUrlString)!
+            cell.profileView.af.setImage(withURL: profileUrl)
+            // end of setting profile image into the post cell
+
             return cell
         } else if indexPath.row <= comments.count {
             let cell = tableView.dequeueReusableCell(withIdentifier: "CommentViewCell") as! CommentViewCell
@@ -196,6 +212,16 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
             
             let user = comment["author"] as! PFUser
             cell.nameLabel.text = user.username
+          
+            // setting the profile image of the author of the comment into the comment cell
+            cell.profileCommentView.layer.masksToBounds = true
+            cell.profileCommentView.layer.cornerRadius = cell.profileCommentView.bounds.width / 2
+            let profileImageFile = user["profilePic"] as! PFFileObject
+            let profileImageUrlString = profileImageFile.url!
+            let profileUrl = URL(string: profileImageUrlString)!
+            cell.profileCommentView.af.setImage(withURL: profileUrl)
+            // end of setting profile image into the comment cell
+
             return cell
         } else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "AddCommentCell")!

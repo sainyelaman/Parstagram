@@ -34,6 +34,14 @@ class LoginViewController: UIViewController {
         user.password = passwordField.text
         
         
+        let imageName = "image_placeholder.png"
+        let image = UIImage(named: imageName)!
+        
+        let imageData = image.pngData()!
+        let imageFile = PFFileObject(name:"image_placeholder.png", data:imageData)
+
+        user["profilePic"] = imageFile
+        
         user.signUpInBackground { (success, error) in
             if success {
                 self.performSegue(withIdentifier: "loginSegue", sender: nil)
