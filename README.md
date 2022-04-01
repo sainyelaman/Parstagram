@@ -18,6 +18,11 @@ The following **bonus** features are implemented:
 - [x] User can add a profile picture. (2pts)
 - [x] Profile pictures are shown for posts and comments. (2pts)
 
+## Additional Comments
+- I made it so that whenever a new user is created, their profile pictures is set to a default image. Therefore, any user always has a profile image. 
+- Made all the profile images to be circular.
+- Added a logo to the launch screen.
+
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
@@ -26,10 +31,7 @@ Here's a walkthrough of implemented user stories:
 
 <img src='http://g.recordit.co/9nBuBoLVUQ.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-## Additional Comments
-- I made it so that whenever a new user is created, their profile pictures is set to a default image. Therefore, any user always has a profile image. 
-- Made all the profile images to be circular.
-- Added a logo to the launch screen.
+
 
 
 
